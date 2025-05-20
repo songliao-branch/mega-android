@@ -52,6 +52,7 @@ import mega.privacy.android.shared.original.core.ui.theme.red_400
 import mega.privacy.android.shared.original.core.ui.theme.red_900
 import mega.privacy.android.shared.original.core.ui.theme.accent_050
 import mega.privacy.android.shared.original.core.ui.theme.accent_900
+import mega.privacy.android.shared.original.core.ui.theme.extensions.accent_900_accent_050
 import mega.privacy.android.shared.original.core.ui.theme.white
 import mega.privacy.mobile.analytics.event.CreateNewAlbumDialogEvent
 
@@ -241,7 +242,7 @@ fun CreateNewAlbumDialog(
             ) {
                 Text(
                     text = stringResource(id = positiveButtonTextResID),
-                    color = accent_900
+                    color = MaterialTheme.colors.accent_900_accent_050
                 )
             }
         },
@@ -262,7 +263,7 @@ fun CreateNewAlbumDialog(
             ) {
                 Text(
                     stringResource(id = sharedR.string.general_dialog_cancel_button),
-                    color = accent_900
+                    color = MaterialTheme.colors.accent_900_accent_050
                 )
             }
         }
