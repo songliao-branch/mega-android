@@ -73,6 +73,7 @@ import mega.privacy.android.shared.original.core.ui.theme.black
 import mega.privacy.android.shared.original.core.ui.theme.grey_alpha_054
 import mega.privacy.android.shared.original.core.ui.theme.grey_alpha_087
 import mega.privacy.android.shared.original.core.ui.theme.accent_900
+import mega.privacy.android.shared.original.core.ui.theme.extensions.accent_900_accent_050
 import mega.privacy.android.shared.original.core.ui.theme.white
 import mega.privacy.android.shared.original.core.ui.theme.white_alpha_054
 import mega.privacy.android.shared.original.core.ui.theme.white_alpha_087
@@ -197,7 +198,7 @@ fun AlbumPhotosSelectionScreen(
                             selectedPhotoIds = state.selectedPhotoIds,
                         )
                     },
-                    backgroundColor = accent_900,
+                    backgroundColor = MaterialTheme.colors.accent_900_accent_050,
                 ) {
                     Icon(
                         painter = painterResource(id = iconPackR.drawable.ic_check_medium_regular_outline),
@@ -260,7 +261,7 @@ private fun AlbumPhotosSelectionHeader(
                 if (numSelectedPhotos > 0) {
                     Text(
                         text = "$numSelectedPhotos",
-                        color = accent_900,
+                        color = MaterialTheme.colors.accent_900_accent_050,
                         fontWeight = FontWeight.W500,
                         style = MaterialTheme.typography.subtitle1,
                     )
@@ -291,9 +292,7 @@ private fun AlbumPhotosSelectionHeader(
                 Icon(
                     painter = painterResource(id = R.drawable.ic_arrow_back_white),
                     contentDescription = null,
-                    tint = accent_900.takeIf {
-                        numSelectedPhotos > 0
-                    } ?: (black.takeIf { isLight } ?: white),
+                    tint = MaterialTheme.colors.accent_900_accent_050,
                 )
             }
         },
