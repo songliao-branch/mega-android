@@ -302,9 +302,7 @@ private fun AlbumPhotosSelectionHeader(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_filter_light),
                         contentDescription = null,
-                        tint = accent_900.takeIf {
-                            numSelectedPhotos > 0
-                        } ?: (black.takeIf { isLight } ?: white),
+                        tint = MaterialTheme.colors.accent_900_accent_050,
                     )
                 }
             }
@@ -314,7 +312,7 @@ private fun AlbumPhotosSelectionHeader(
                     Icon(
                         painter = painterResource(id = R.drawable.ic_dots_vertical_white),
                         contentDescription = null,
-                        tint = accent_900,
+                        tint = MaterialTheme.colors.accent_900_accent_050,
                     )
                 }
 
