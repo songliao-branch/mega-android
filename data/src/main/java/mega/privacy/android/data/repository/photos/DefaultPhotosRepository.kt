@@ -470,6 +470,7 @@ internal class DefaultPhotosRepository @Inject constructor(
         recursive: Boolean = true,
         query: String = "",
         searchCategory: SearchCategory,
+        order: SortOrder = SortOrder.ORDER_MODIFICATION_DESC,
         isFromFolderLink: Boolean = false,
     ): List<MegaNode> {
         val token = cancelTokenProvider.getOrCreateCancelToken()
@@ -480,9 +481,9 @@ internal class DefaultPhotosRepository @Inject constructor(
             searchCategory = searchCategory,
         )
         return if (isFromFolderLink) {
-            getNodeByCategorySearchFromFolderLink(recursive, filter, token)
+            getNodeByCategorySearchFromFolderLink(recursive, filter, token, order)
         } else {
-            getNodeByCategorySearch(recursive, filter, token)
+            getNodeByCategorySearch(recursive, filter, token, order)
         }
     }
 
@@ -490,16 +491,17 @@ internal class DefaultPhotosRepository @Inject constructor(
         recursive: Boolean,
         filter: MegaSearchFilter,
         token: MegaCancelToken,
+        order: SortOrder
     ): List<MegaNode> = if (recursive) {
         megaApiFolder.search(
             filter = filter,
-            order = MegaApiAndroid.ORDER_MODIFICATION_DESC,
+            order = sortOrderIntMapper(order),
             megaCancelToken = token
         )
     } else {
         megaApiFolder.getChildren(
             filter = filter,
-            order = MegaApiAndroid.ORDER_MODIFICATION_DESC,
+            order = sortOrderIntMapper(order),
             megaCancelToken = token
         )
     }
@@ -508,16 +510,17 @@ internal class DefaultPhotosRepository @Inject constructor(
         recursive: Boolean,
         filter: MegaSearchFilter,
         token: MegaCancelToken,
+        order: SortOrder
     ) = if (recursive) {
         megaApiFacade.searchWithFilter(
             filter = filter,
-            order = MegaApiAndroid.ORDER_MODIFICATION_DESC,
+            order = sortOrderIntMapper(order),
             megaCancelToken = token
         )
     } else {
         megaApiFacade.getChildren(
             filter = filter,
-            order = MegaApiAndroid.ORDER_MODIFICATION_DESC,
+            order = sortOrderIntMapper(order),
             megaCancelToken = token
         )
     }
@@ -816,20 +819,23 @@ internal class DefaultPhotosRepository @Inject constructor(
     override suspend fun getMediaDiscoveryNodes(
         parentId: NodeId,
         recursive: Boolean,
+        order: SortOrder
     ): List<ImageNode> = withContext(ioDispatcher) {
         val nodes = awaitAll(
             async {
                 getMegaNodeByCategory(
                     parentId = parentId,
                     searchCategory = SearchCategory.IMAGES,
-                    recursive = recursive
+                    recursive = recursive,
+                    order = order,
                 ).filter { isImageNodeValid(it) }
             },
             async {
                 getMegaNodeByCategory(
                     parentId = parentId,
                     searchCategory = SearchCategory.VIDEO,
-                    recursive = recursive
+                    recursive = recursive,
+                    order = order
                 ).filter { isVideoNodeValid(it) }
             },
         ).flatten()

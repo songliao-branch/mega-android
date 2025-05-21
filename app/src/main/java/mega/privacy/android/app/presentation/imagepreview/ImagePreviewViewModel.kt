@@ -3,6 +3,7 @@ package mega.privacy.android.app.presentation.imagepreview
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -37,6 +38,7 @@ import mega.privacy.android.app.presentation.movenode.mapper.MoveRequestMessageM
 import mega.privacy.android.app.presentation.transfers.starttransfer.model.TransferTriggerEvent
 import mega.privacy.android.domain.entity.GifFileTypeInfo
 import mega.privacy.android.domain.entity.ImageFileTypeInfo
+import mega.privacy.android.domain.entity.SortOrder
 import mega.privacy.android.domain.entity.VideoFileTypeInfo
 import mega.privacy.android.domain.entity.account.business.BusinessAccountStatus
 import mega.privacy.android.domain.entity.imageviewer.ImageResult
@@ -190,7 +192,8 @@ class ImagePreviewViewModel @Inject constructor(
             )
             val isCurrentImageNodeAvailableOffline =
                 currentImageNode?.isAvailableOffline ?: false
-
+            val names = filteredImageNodes.map { it.name }.joinToString(" | ")
+            Log.d("Songtest", "filter images ${names} current inx ${currentImageNodeIndex} img name:${currentImageNode?.name}")
             _state.update {
                 it.copy(
                     isInitialized = true,
@@ -239,6 +242,8 @@ class ImagePreviewViewModel @Inject constructor(
                 val isCurrentImageNodeAvailableOffline =
                     currentImageNode?.isAvailableOffline ?: false
 
+                val names = imageNodes.map { it.name }.joinToString(" | ")
+                Log.d("Songtest", "monitorImageNodes: cur indx:${currentImageNodeIndex} cur name:${currentImageNode?.name} all:${names}")
                 Timber.d("ImagePreview VM imageNodes: ${imageNodes.size}")
 
                 _state.update {

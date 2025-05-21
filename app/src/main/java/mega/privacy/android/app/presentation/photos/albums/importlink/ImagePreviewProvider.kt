@@ -12,6 +12,7 @@ import mega.privacy.android.app.domain.usecase.GetNodeByHandle
 import mega.privacy.android.app.presentation.imagepreview.ImagePreviewActivity
 import mega.privacy.android.app.presentation.imagepreview.fetcher.MediaDiscoveryImageNodeFetcher.Companion.IS_RECURSIVE
 import mega.privacy.android.app.presentation.imagepreview.fetcher.MediaDiscoveryImageNodeFetcher.Companion.PARENT_ID
+import mega.privacy.android.app.presentation.imagepreview.fetcher.MediaDiscoveryImageNodeFetcher.Companion.SORT
 import mega.privacy.android.app.presentation.imagepreview.model.ImagePreviewFetcherSource
 import mega.privacy.android.app.presentation.imagepreview.model.ImagePreviewMenuSource
 import mega.privacy.android.app.presentation.photos.model.Sort
@@ -89,6 +90,7 @@ class ImagePreviewProvider @Inject constructor(
             startImagePreviewFromMD(
                 activity = activity,
                 photo = photo,
+                currentSort = currentSort,
                 folderNodeId = folderNodeId,
             )
         }
@@ -97,6 +99,7 @@ class ImagePreviewProvider @Inject constructor(
     private fun startImagePreviewFromMD(
         activity: Activity,
         photo: Photo,
+        currentSort: Sort,
         folderNodeId: Long?,
     ) {
         (activity as LifecycleOwner).lifecycleScope.launch {
@@ -108,7 +111,7 @@ class ImagePreviewProvider @Inject constructor(
                     imageSource = ImagePreviewFetcherSource.MEDIA_DISCOVERY,
                     menuOptionsSource = ImagePreviewMenuSource.MEDIA_DISCOVERY,
                     anchorImageNodeId = NodeId(photo.id),
-                    params = mapOf(PARENT_ID to parentID, IS_RECURSIVE to recursive),
+                    params = mapOf(PARENT_ID to parentID, IS_RECURSIVE to recursive, SORT to currentSort.name),
                     enableAddToAlbum = true,
                 ).run {
                     activity.startActivity(this)

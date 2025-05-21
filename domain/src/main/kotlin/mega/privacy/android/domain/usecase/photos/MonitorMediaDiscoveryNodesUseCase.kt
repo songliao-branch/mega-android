@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import mega.privacy.android.domain.entity.ImageFileTypeInfo
+import mega.privacy.android.domain.entity.SortOrder
 import mega.privacy.android.domain.entity.VideoFileTypeInfo
 import mega.privacy.android.domain.entity.node.FileNode
 import mega.privacy.android.domain.entity.node.ImageNode
@@ -29,14 +30,17 @@ class MonitorMediaDiscoveryNodesUseCase @Inject constructor(
         ::checkMediaDiscoveryNode,
     )
 
-    operator fun invoke(parentId: NodeId, recursive: Boolean): Flow<List<ImageNode>> = flow {
-        emit(populateNodes(parentId, recursive))
+    operator fun invoke(parentId: NodeId, recursive: Boolean, sortOrder: SortOrder): Flow<List<ImageNode>> = flow {
+        emit(populateNodes(parentId, recursive, sortOrder))
         emitAll(monitorNodes(parentId))
     }
 
-    private suspend fun populateNodes(parentId: NodeId, recursive: Boolean): List<ImageNode> {
-        val nodes = photosRepository.getMediaDiscoveryNodes(parentId, recursive)
-
+    private suspend fun populateNodes(parentId: NodeId, recursive: Boolean, sortOrder: SortOrder): List<ImageNode> {
+        val nodes = photosRepository.getMediaDiscoveryNodes(
+            parentId,
+            recursive,
+            sortOrder
+        )
         nodesCache.clear()
         nodesCache.putAll(nodes.associateBy { it.id })
 

@@ -28,9 +28,11 @@ import mega.privacy.android.app.main.FileExplorerActivity
 import mega.privacy.android.app.presentation.extensions.isDarkMode
 import mega.privacy.android.app.presentation.imagepreview.ImagePreviewActivity
 import mega.privacy.android.app.presentation.imagepreview.fetcher.FolderLinkMediaDiscoveryImageNodeFetcher
+import mega.privacy.android.app.presentation.imagepreview.fetcher.MediaDiscoveryImageNodeFetcher
 import mega.privacy.android.app.presentation.imagepreview.model.ImagePreviewFetcherSource
 import mega.privacy.android.app.presentation.imagepreview.model.ImagePreviewMenuSource
 import mega.privacy.android.app.presentation.photos.mediadiscovery.view.MediaDiscoveryScreen
+import mega.privacy.android.app.presentation.photos.util.mapSortToSortOrder
 import mega.privacy.android.app.presentation.settings.model.StorageTargetPreference
 import mega.privacy.android.app.utils.AlertDialogUtil
 import mega.privacy.android.app.utils.Constants.FOLDER_LINK_ADAPTER
@@ -246,6 +248,9 @@ class MediaDiscoveryActivity : BaseActivity(), PermissionRequester, SnackbarShow
                 isForeign = true,
                 params = mapOf(
                     FolderLinkMediaDiscoveryImageNodeFetcher.PARENT_ID to mediaHandle,
+                    MediaDiscoveryImageNodeFetcher.SORT to mapSortToSortOrder(
+                        mediaDiscoveryViewModel.state.value.currentSort
+                    ).name
                 ),
             ).run {
                 startActivity(this)

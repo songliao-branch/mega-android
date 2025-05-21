@@ -43,6 +43,8 @@ import mega.privacy.android.app.presentation.photos.util.createDaysCardList
 import mega.privacy.android.app.presentation.photos.util.createMonthsCardList
 import mega.privacy.android.app.presentation.photos.util.createYearsCardList
 import mega.privacy.android.app.presentation.photos.util.groupPhotosByDay
+import mega.privacy.android.app.presentation.photos.util.mapSortOrderToSort
+import mega.privacy.android.app.presentation.photos.util.mapSortToSortOrder
 import mega.privacy.android.app.presentation.settings.model.MediaDiscoveryViewSettings
 import mega.privacy.android.app.presentation.transfers.starttransfer.model.TransferTriggerEvent
 import mega.privacy.android.app.utils.Constants.INTENT_EXTRA_KEY_NEED_STOP_HTTP_SERVER
@@ -405,18 +407,6 @@ class MediaDiscoveryViewModel @Inject constructor(
                 )
             }
         }
-    }
-
-    private fun mapSortOrderToSort(sortOrder: SortOrder): Sort = when (sortOrder) {
-        SortOrder.ORDER_MODIFICATION_DESC -> Sort.NEWEST
-        SortOrder.ORDER_MODIFICATION_ASC -> Sort.OLDEST
-        else -> Sort.NEWEST
-    }
-
-    private fun mapSortToSortOrder(sort: Sort): SortOrder = when (sort) {
-        Sort.NEWEST -> SortOrder.ORDER_MODIFICATION_DESC
-        Sort.OLDEST -> SortOrder.ORDER_MODIFICATION_ASC
-        else -> SortOrder.ORDER_MODIFICATION_DESC
     }
 
     private fun needsDateSeparator(
