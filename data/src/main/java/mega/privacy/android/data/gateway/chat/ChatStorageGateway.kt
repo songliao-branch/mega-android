@@ -94,6 +94,11 @@ interface ChatStorageGateway {
      */
     suspend fun deletePendingMessage(pendingMessageId: Long)
 
+
+    /**
+     * todo:
+     */
+    suspend fun deleteMessage(msgId: Long)
     /**
      * Fetch pending messages for a chat
      *

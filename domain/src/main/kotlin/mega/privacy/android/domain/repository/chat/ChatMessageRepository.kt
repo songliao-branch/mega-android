@@ -404,6 +404,11 @@ interface ChatMessageRepository {
      */
     suspend fun deleteMessage(chatId: Long, msgId: Long): ChatMessage?
 
+
+    /**
+     * todo:
+     */
+    suspend fun deleteMessageLocally(chatId: Long, msgId: Long)
     /**
      * Revoke the access to a node granted by an attachment message
      *

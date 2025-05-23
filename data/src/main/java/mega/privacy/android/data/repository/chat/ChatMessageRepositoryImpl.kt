@@ -269,6 +269,10 @@ internal class ChatMessageRepositoryImpl @Inject constructor(
         megaChatApiGateway.deleteMessage(chatId, msgId)?.let { chatMessageMapper(it) }
     }
 
+    override suspend fun deleteMessageLocally(chatId: Long, msgId: Long) = withContext(ioDispatcher) {
+        chatStorageGateway.deleteMessage(msgId)
+    }
+
     override suspend fun revokeAttachmentMessage(chatId: Long, msgId: Long) =
         withContext(ioDispatcher) {
             megaChatApiGateway.revokeAttachmentMessage(chatId, msgId)?.let { chatMessageMapper(it) }

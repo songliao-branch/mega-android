@@ -16,7 +16,9 @@ class DeleteGeneralMessageUseCase @Inject constructor(
 ) : DeleteMessageUseCase() {
 
     public override suspend fun deleteMessage(message: TypedMessage) {
-        chatMessageRepository.deleteMessage(message.chatId, message.msgId)
+        chatMessageRepository.deleteMessage(message.chatId, message.msgId)?.let {//try delete from server
+            chatMessageRepository.deleteMessageLocally(message.chatId, message.msgId)// remove from local db to update UI
+        }
     }
 
     override suspend fun canDelete(message: TypedMessage) =
