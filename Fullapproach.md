@@ -10,8 +10,8 @@ fun sendMessage(msg){
 		sendTextMessageUseCase(chatId, msg)
 	} else {
 		// create a draft offline message with random Long msgId X so UI can display,
-		UpdateTempTextMessageUseCase(chatId, msg)// this updates UI only
-		OfflineTextMessageQueue.enqueue(SendOfflineTextWhenOnlineWorker(chatId, msg, X))
+		val tempId = UpdateTempTextMessageUseCase(chatId, msg)// this updates UI only
+		OfflineTextMessageQueue.enqueue(SendOfflineTextWhenOnlineWorker(tempId, chatId, msg))
 	}
 }
 fun onDeletedMessages(messages: Set<TypedMessage>) {
@@ -26,9 +26,10 @@ fun onDeletedMessages(messages: Set<TypedMessage>) {
 
 ## new classes	
 class UpdateTempTextMessageUseCase(chatId, msg) {
-	fun invoke() {
+	fun invoke(): Int {
 		long id = System.currentTimeMillis()
 		typedMessageDao.insert(id, chatId, msg) // this will update the UI
+		return id
 	}
 }
 
@@ -43,7 +44,7 @@ class SendOfflineTextWhenOnlineWorker(tempId, chatId, msg) {
 
 class DeleteLocalMessageUseCase(chatId, msgId) {
 	fun invoke() {
-		typedMessaegDao.delete(chatId, msgId)
+		typedMessageDao.delete(chatId, msgId)
 	}
 }
 
